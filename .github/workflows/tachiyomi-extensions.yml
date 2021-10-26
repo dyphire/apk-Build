@@ -9,7 +9,9 @@ on:
       ref:
         required: true
         default: 'zhongfly'
-
+      extension:
+        required: true
+        default: 'copymanga'
 
 jobs:
   gradle:
@@ -39,7 +41,7 @@ jobs:
       - name: Clean
         run: |
           cd ./src/zh/
-          rm -rf `ls -I copymanga`
+          rm -rf `ls -I ${{ github.event.inputs.extension }}`
           ls .
 
       - name: Build extensions
@@ -57,7 +59,7 @@ jobs:
         uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
-          releaseDirectory: ./src/zh/copymanga/build/outputs/apk/release
+          releaseDirectory: ./src/zh/${{ github.event.inputs.extension }}/build/outputs/apk/release
           signingKeyBase64: ${{ secrets.SIGN_FILE_BASE64 }}
           alias: ${{ secrets.KEY_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -68,7 +70,7 @@ jobs:
         with:
           apkPath: ${{steps.sign_app.outputs.signedReleaseFile}}
       - name: upload artifact for apk
-        uses: kittaakos/upload-artifact-as-is@master
+        uses: actions/upload-artifact@v2
         if: success()
         with:
           name: ${{steps.apk.outputs.applicationId}}_${{steps.apk.outputs.versionNum}}_${{steps.apk.outputs.versionCode}}
