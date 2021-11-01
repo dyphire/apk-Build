@@ -1,0 +1,36 @@
+name: "mpv.net build"
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        required: true
+        default: 'stax76/mpv.net'
+      ref:
+        required: true
+        default: 'master'
+jobs:
+  build:
+    name: "Build mpv.net"
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.inputs.repo }}
+          ref: ${{ github.event.inputs.ref }}
+          fetch-depth: 1
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1
+      - name: Build
+        shell: cmd
+        run: (msbuild .\src\mpv.net.sln /m /p:Configuration=Release)
+      - name: Get version
+        shell: bash
+        run: |
+          echo "version=$(cat src/Properties/AssemblyInfo.cs | grep -o 'AssemblyFileVersion.*' | grep -o '\([0-9]\+\.\)\+[0-9]\+')" >> $GITHUB_ENV
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: "mpv.net_${{ env.version }}"
+          path: src/bin
