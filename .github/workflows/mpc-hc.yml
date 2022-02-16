@@ -9,6 +9,10 @@ on:
       ref:
         required: true
         default: 'develop'
+      build_32:
+        description: "input 'true' if you want build 32bit"
+        required: false
+        default: "false"
 
 env:
     WINSYSTEM: '8.1'
@@ -146,6 +150,7 @@ jobs:
           rmdir bin /s /q
       # Build the package x86
       - name: Build the package (x86)
+        if: ${{ github.event.inputs.build_32 != 'false' }}
         env:
           MPCHC_MSYS: ${{ env.MSYS }}\msys64
           MPCHC_MINGW32: ${{ env.MSYS }}\msys64\mingw64
