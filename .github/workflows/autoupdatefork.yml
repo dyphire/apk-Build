@@ -29,5 +29,5 @@ jobs:
         git remote -v
         git fetch upstream
         git checkout main
-        git merge --strategy-option=ours upstream/main
+        git rebase --strategy-option=ours upstream/main
         git push -f origin main
