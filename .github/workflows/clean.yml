@@ -1,10 +1,14 @@
-name: Clean workflows and releases
+name: Clean workflows
 on:
   schedule:
-    - cron: '0 1 1 * *'
+    - cron: '0 0 1 * *'
+# Run monthly, at 00:00 on the 1st day of month.
   workflow_dispatch:
-# Run monthly, at 01:00 on the 1st day of month.
-
+    inputs:
+      days:
+        description: 'Number of days.'
+        required: true
+        default: 30
 jobs:
   del_runs:
     runs-on: ubuntu-latest
@@ -14,5 +18,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          retain_days: 30
-          keep_minimum_runs: 3
+          retain_days: ${{ github.event.inputs.days }}
+          keep_minimum_runs: 0
