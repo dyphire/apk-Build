@@ -1,0 +1,54 @@
+name:  KikoPlay build
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        required: true
+        default: 'KikoPlayProject/KikoPlay'
+      ref:
+        required: true
+        default: 'master'
+        
+jobs:
+  build:
+    name: Build
+    # 运行平台,  windows-latest目前是windows server 2022
+    runs-on: windows-2019
+    strategy:
+      # 矩阵配置
+      matrix:
+        qt_ver: [5.15.2]
+        qt_target: [desktop]
+        qt_host: [windows]
+        # mingw用不了
+        # qt_arch: [win64_msvc2017_64, win32_msvc2017, win32_mingw53,win32_mingw73]
+        qt_arch: [win64_msvc2015_64]
+        msvc_arch: [x64]
+
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.inputs.repo }}
+          ref: ${{ github.event.inputs.ref }}
+          fetch-depth: 1
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          # Version of Qt to install
+          version: ${{ matrix.qt_ver }}
+          host: ${{ matrix.qt_host }}
+          # Target platform for build
+          target: ${{ matrix.qt_target }}
+          # Architecture for Windows/Android
+          arch: ${{ matrix.qt_arch }}
+      # 编译kikoplay
+      - name: build-kikoplay
+        shell: cmd
+        env:
+          vc_arch: ${{ matrix.msvc_arch }}
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
+          qmake
+          nmake /K cfg=Release
