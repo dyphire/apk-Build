@@ -1,4 +1,4 @@
-name: Build tachiyomi-extensions
+name: Build tachiyomi-extensions (copymanga)
 
 on: 
   workflow_dispatch:
@@ -62,6 +62,11 @@ jobs:
         uses: kittaakos/upload-artifact-as-is@master
         with:
           path: "**/*.apk"
+          
+      - name: upload code
+        uses: actions/upload-artifact@v3
+        with:
+          path: src/zh/copymanga/src/eu/kanade/tachiyomi/extension/zh/copymanga
 
       - name: Clean up CI files
         run: rm signingkey.jks
