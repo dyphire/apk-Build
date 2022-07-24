@@ -47,7 +47,7 @@ jobs:
           sed -i '/RateLimit/d' ./src/eu/kanade/tachiyomi/extension/zh/copymanga/CopyManga.kt
           find . -type f -name NonblockingRateLimitInterceptor.kt -exec rm -f {} \;
       - name: Build extensions
-        uses: gradle/gradle-command-action@v2.1.7
+        uses: gradle/gradle-command-action@v2.2.2
         env:
           CI_MULTISRC: "false"
           CI_CHUNK_NUM: 0
