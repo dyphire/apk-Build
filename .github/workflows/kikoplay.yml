@@ -34,12 +34,6 @@ jobs:
           fetch-depth: 1
       - name: Install msvc
         uses: ilammy/msvc-dev-cmd@v1
-      - name: ls
-        run: |
-            cd 'C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC'
-            ls
-            sed "s:^:`pwd`/:"
-            cd ${{ github.workspace }}
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
@@ -61,5 +55,6 @@ jobs:
       - name: Build kikoplay
         shell: cmd
         run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" 'x64'
           cmake -G "Visual Studio 14 2015" -A "x64" -B build -S . "-DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DUSE_VCPKG_QT=FALSE -DCMAKE_BUILD_TYPE=Release
           cmake --build build --config Release
