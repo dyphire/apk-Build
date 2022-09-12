@@ -80,7 +80,7 @@ jobs:
       run: echo "::set-output name=date::$(date +%Y-%m-%d)"
 
     - name: Upload 7z archives (x64)
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Portable-${{ steps.timestamp.outputs.date }}
         path: _bin/Packages/**/*x64.7z
