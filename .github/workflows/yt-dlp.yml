@@ -10,7 +10,7 @@ jobs:
       ytdlp_version: ${{ steps.bump_version.outputs.ytdlp_version }}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v3.1.0
       with:
         repository: yt-dlp/yt-dlp
         fetch-depth: 0
@@ -31,7 +31,7 @@ jobs:
     needs: build_unix
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v3.1.0
       with:
         repository: yt-dlp/yt-dlp
         fetch-depth: 0
@@ -85,7 +85,7 @@ jobs:
     needs: build_unix
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v3.1.0
       with:
         repository: yt-dlp/yt-dlp
         fetch-depth: 0

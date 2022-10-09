@@ -23,7 +23,7 @@ jobs:
       MSYS: 'D:\'
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v3.1.0
       with:
         repository: ${{ github.event.inputs.repo }}
         ref: ${{ github.event.inputs.ref }}
@@ -51,7 +51,7 @@ jobs:
         choco install vcredist2010
  
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3.1.0
       with:
         fetch-depth: 0
         submodules: true

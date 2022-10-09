@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - name: Clone repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.1.0
         with:
           repository: Jays2Kings/tachiyomiJ2K
           fetch-depth: 1
