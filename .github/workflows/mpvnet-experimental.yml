@@ -1,0 +1,56 @@
+name: "mpv.net-experimental build"
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        required: true
+        default: 'mpvnet-player/mpv.net-experimental'
+      ref:
+        required: true
+        default: 'master'
+jobs:
+  build:
+    name: "Build mpv.net-experimental"
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.inputs.repo }}
+          ref: ${{ github.event.inputs.ref }}
+          fetch-depth: 1
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          update: true
+          install: >-
+            base-devel
+            wget
+            p7zip
+      - name: Build
+        shell: cmd
+        run: |
+          cd src
+          nuget restore
+          msbuild -restore
+          msbuild MpvNetExp.sln /m /p:Configuration=Release
+      - name: Download libmpv
+        shell: msys2 {0}
+        run: |
+          wget -nv -O libmpv.7z https://downloads.sourceforge.net/mpv-player-windows/mpv-dev-x86_64-v3-20231022-git-6e428c2.7z
+          7z x -y libmpv.7z -olibmpv
+          cp -f libmpv/libmpv-2.dll src/MpvNet.Windows/bin/Release/ || true
+      - name: Download MediaInfo
+        shell: msys2 {0}
+        run: |
+          wget -nv -O MediaInfo.7z https://mediaarea.net/download/binary/libmediainfo0/23.10/MediaInfo_DLL_23.10_Windows_x64_WithoutInstaller.7z
+          7z x -y MediaInfo.7z -oMediaInfo
+          cp -f MediaInfo/MediaInfo.dll src/MpvNet.Windows/bin/Release/ || true
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: "mpv.net-win64"
+          path: src/MpvNet.Windows/bin/Release/
