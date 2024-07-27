@@ -122,13 +122,13 @@ jobs:
           set PATH
           ./build.bat x64 Release Packages
       - name: Upload 7z archives (x64)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with: 
           name: archive-file-x64
           path: bin/*x64.7z
 
       - name: Upload Installer (x64)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with: 
           name: setup-x64
           path: bin/*x64.exe
@@ -165,13 +165,13 @@ jobs:
           set PATH
           ./build.bat x86 Release Packages
       - name: Upload 7z archives (x86)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with: 
           name: archive-file-x86
           path: bin/*x86.7z
 
       - name: Upload Installer (x86)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with: 
           name: setup-x86
           path: bin/*x86.exe
