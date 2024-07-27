@@ -64,7 +64,7 @@ jobs:
           path: "**/*.apk"
           
       - name: upload code
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: src/zh/copymanga/src/eu/kanade/tachiyomi/extension/zh/copymanga
 

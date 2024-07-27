@@ -50,7 +50,7 @@ jobs:
           7z x -y MediaInfo.7z -oMediaInfo
           cp -f MediaInfo/MediaInfo.dll src/MpvNet.Windows/bin/Release/ || true
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: "mpv.net-win64"
           path: src/MpvNet.Windows/bin/Release/
